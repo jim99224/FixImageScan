@@ -1,0 +1,3 @@
+.cache/
+security/reports/*
+!security/reports/.gitkeep

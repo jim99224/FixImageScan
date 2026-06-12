@@ -1,0 +1,5 @@
+# Add temporary vulnerability exceptions here, one ID per line.
+# Keep each exception reviewed and documented in your issue tracker.
+#
+# Example:
+# CVE-2024-0000
