@@ -1,5 +1,5 @@
 IMAGE ?= local/cve-test:latest
-DOCKERFILE ?= Dockerfile
+DOCKERFILE ?= ./Dockerfile_example
 CONTEXT ?= .
 REPORT_DIR ?= security/reports
 SEVERITY ?= HIGH,CRITICAL
@@ -21,7 +21,7 @@ help:
 		'  make clean-reports' \
 		'' \
 		'Common overrides:' \
-		'  IMAGE=myapp:cve-test DOCKERFILE=./Dockerfile CONTEXT=. SEVERITY=HIGH,CRITICAL'
+		'  IMAGE=myapp:cve-test DOCKERFILE=./Dockerfile_example CONTEXT=. SEVERITY=HIGH,CRITICAL'
 
 build:
 	docker build -f "$(DOCKERFILE)" -t "$(IMAGE)" "$(CONTEXT)"

@@ -37,26 +37,38 @@ If you do not install the scanner CLIs locally, Docker will pull:
 
 ## Quick Start
 
-Put your `Dockerfile` in this repo, then run:
+Run the included example first:
 
 ```bash
-make scan
+make scan DOCKERFILE=./Dockerfile_example
 ```
 
 If `make` is not installed:
 
 ```bash
-scripts/cve-scan.sh scan
+DOCKERFILE=./Dockerfile_example scripts/cve-scan.sh scan
 ```
 
 By default this builds:
 
 ```text
 IMAGE=local/cve-test:latest
-DOCKERFILE=Dockerfile
+DOCKERFILE=./Dockerfile_example
 CONTEXT=.
 SEVERITY=HIGH,CRITICAL
 IGNORE_UNFIXED=true
+```
+
+To test your own Dockerfile, pass its path with `DOCKERFILE`:
+
+```bash
+make scan DOCKERFILE=./path/to/Dockerfile
+```
+
+Without `make`:
+
+```bash
+DOCKERFILE=./path/to/Dockerfile scripts/cve-scan.sh scan
 ```
 
 ## Common Commands
@@ -64,13 +76,13 @@ IGNORE_UNFIXED=true
 Build only:
 
 ```bash
-make build
+make build DOCKERFILE=./Dockerfile_example
 ```
 
 Lint Dockerfile only:
 
 ```bash
-make lint
+make lint DOCKERFILE=./Dockerfile_example
 ```
 
 Scan an already-built image with Trivy:
@@ -94,7 +106,7 @@ IMAGE=myapp:cve-test scripts/cve-scan.sh grype
 Use a custom Dockerfile and image name:
 
 ```bash
-make scan IMAGE=myapp:cve-test DOCKERFILE=docker/Dockerfile CONTEXT=.
+make scan IMAGE=myapp:cve-test DOCKERFILE=./Dockerfile_example CONTEXT=.
 ```
 
 Relax the severity gate temporarily:
