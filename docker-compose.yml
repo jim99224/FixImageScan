@@ -1,0 +1,43 @@
+services:
+  airflow-standalone:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: local/cve-test:latest
+    container_name: airflow-standalone
+    entrypoint: /bin/bash
+    command:
+      - -c
+      - |
+        set -euo pipefail
+
+        airflow standalone &
+        airflow_pid="$$!"
+
+        until airflow dags list >/dev/null 2>&1; do
+          sleep 5
+        done
+
+        airflow dags unpause tutorial >/dev/null 2>&1 || true
+        airflow dags unpause example_bash_operator >/dev/null 2>&1 || true
+        airflow dags unpause local_standalone_example >/dev/null 2>&1 || true
+
+        wait "$$airflow_pid"
+    environment:
+      AIRFLOW_HOME: /opt/airflow
+      AIRFLOW__CORE__LOAD_EXAMPLES: "True"
+      AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "False"
+      AIRFLOW__CORE__DAGBAG_IMPORT_TIMEOUT: "120"
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags
+      - ./airflow/logs:/opt/airflow/logs
+      - ./airflow/plugins:/opt/airflow/plugins
+      - ./airflow/standalone:/opt/airflow/standalone
+    healthcheck:
+      test: ["CMD-SHELL", "airflow dags list >/dev/null 2>&1"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 60s

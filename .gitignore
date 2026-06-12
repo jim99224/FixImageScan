@@ -1,3 +1,8 @@
 .cache/
 security/reports/*
 !security/reports/.gitkeep
+airflow/logs/
+airflow/plugins/
+airflow/standalone/
+airflow/airflow.db
+airflow/standalone_admin_password.txt

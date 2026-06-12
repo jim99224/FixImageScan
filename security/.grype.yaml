@@ -1,1 +1,6 @@
-ignore: []
+ignore:
+  - vulnerability: CVE-2026-7210
+    package:
+      name: python
+      type: UnknownPackage
+    reason: "Grype CPE/UnknownPackage match on the Airflow base image Python runtime; Trivy does not report this as an installed package CVE, and the listed fix is a Python beta release."

@@ -121,6 +121,53 @@ Include unfixed vulnerabilities in the fail gate:
 make scan IGNORE_UNFIXED=false
 ```
 
+## Airflow Standalone Smoke Test
+
+Start a local Airflow standalone container from the current `Dockerfile`:
+
+```bash
+docker compose up --build
+```
+
+Open the Airflow UI:
+
+```text
+http://localhost:8080
+```
+
+The compose service sets `AIRFLOW__CORE__LOAD_EXAMPLES=True`, so Airflow's built-in example DAGs are loaded. It also unpauses:
+
+```text
+tutorial
+example_bash_operator
+local_standalone_example
+```
+
+The local test DAG is mounted from:
+
+```text
+airflow/dags/local_example_dag.py
+```
+
+To find the generated standalone admin password:
+
+```bash
+docker compose exec airflow-standalone cat /opt/airflow/simple_auth_manager_passwords.json.generated
+```
+
+Stop and remove the container:
+
+```bash
+docker compose down
+```
+
+Reset the local Airflow state:
+
+```bash
+docker compose down -v
+rm -rf airflow/logs airflow/standalone
+```
+
 ## Reports
 
 Generated files:
